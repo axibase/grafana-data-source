@@ -14,19 +14,11 @@ define([
             this.name = instanceSettings.name;
             this.templateSrv = templateSrv;
             this.backendSrv = backendSrv;
-            this.supportMetrics = true;
             this.backendSrv = backendSrv;
             this.cache = 300000;
-            this.recent = {};
-            this.recentTags = {};
             this.q = $q;
             self = this;
         }
-
-        AtsdDatasource.prototype.dropCache = function () {
-            this.recent = {};
-            this.recentTags = {};
-        };
 
         AtsdDatasource.prototype.query = function (options) {
             var start = _convertToAtsdTime(options.range.from);
