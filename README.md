@@ -1,11 +1,11 @@
 # Grafana Datasource plugin for Axibase Time Series Database
 
-Axibase Time Series Database was designed from the ground-up to store and analyze time-series data at scale. Unlike traditional databases it comes with Rule Engine, Data Versioning, SQL Query Language, Data Forecasting and more. [Learn more about ATSD on axibase.com](http://axibase.com/products/axibase-time-series-database/) 
+[Axibase Time Series Database](http://axibase.com/products/axibase-time-series-database/) makes it easy and convenient to store time series data at scale. It provides Network API, REST API, SQL query and other capabilities to analyze and visualize raw numeric observations both via a built-in visualization library as well as via widely-used external dashboarding tools such as [Grafana](http://grafana.org/).
 
 ### Requirements
 
-* Instance of ATSD
-* Grafana > 3.x.x
+* ATSD 14000+
+* Grafana 3+
 
 ### Installation
 
@@ -15,17 +15,16 @@ Axibase Time Series Database was designed from the ground-up to store and analyz
 sudo git clone https://github.com/axibase/grafana.git /var/lib/grafana/plugins/atsd
 ```
 
-* Restart your Grafana server
+* Restart Grafana
 
 ```sh
 sudo service grafana-server restart
 ```
 
-### Verify plugin installation
+### Verify Installation
  
  * Go to Grafana UI.
  * Open Menu -> Plugins.
  * Select datasource type
- * Axibase Time Series Database should appear on this page.
+ * Select Axibase Time Series Database datasource
  
- ![](http://image.prntscr.com/image/deefeeda75c84c1bb0b4ba570be0721b.png)
