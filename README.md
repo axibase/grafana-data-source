@@ -32,6 +32,14 @@ sudo service grafana-server restart
 
 ### Examples
 
-| [#1](img/examples/example4.png?raw=true) | [#2](img/examples/example2.png?raw=true) | [#3](img/examples/example3.png?raw=true) |
+| * Tabular View
+  * Tag Selector
+  * 2-Hour Aggregation
+ | * Entity Wildcard
+   * All Tags
+ | * Tag Selector
+   * Multiple Tags
+   * Tag Auto-complete
+|
 | ------ | ------ | ----- |
-| ![](img/examples/example2.png) | ![](img/examples/example3.png) | ![](img/examples/example4.png) |
+| ![](img/examples/example2.png?raw=true) | ![](img/examples/example3.png?raw=true) | ![](img/examples/example4.png?raw=true) |
