@@ -11,13 +11,13 @@
 
 *  Clone this repository into Grafana plugin folder (`default`: `/var/lib/grafana/plugins`)
 
-```sh
+```bash
 sudo git clone https://github.com/axibase/grafana.git /var/lib/grafana/plugins/atsd
 ```
 
 * Restart Grafana
 
-```sh
+```bash
 sudo service grafana-server restart
 ```
 
@@ -28,3 +28,10 @@ sudo service grafana-server restart
  * Select datasource type
  * Select Axibase Time Series Database datasource
  
+![](img/grafana-plugins-datasource-page.png)
+
+### Examples
+
+| <ul> <li>Tabular View</li><li>Tag Selector</li><li>2-Hour Aggregation</li></ul> | <ul> <li>Entity Wildcard</li> <li>All Tags</li></ul> | <ul> <li>Tag Selector</li> <li>Multiple Tags</li> <li>Tag Auto-complete</li></ul> |
+| ------ | ------ | ----- |
+| ![](img/examples/example2.png?raw=true) | ![](img/examples/example3.png?raw=true) | ![](img/examples/example4.png?raw=true) |
