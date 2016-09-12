@@ -28,4 +28,4 @@ sudo service grafana-server restart
  * Select datasource type
  * Axibase Time Series Database should appear on this page.
  
- ![](http://image.prntscr.com/image/deefeeda75c84c1bb0b4ba570be0721b.png)
+ ![](img/verify-plugin-datasources-page.png)
