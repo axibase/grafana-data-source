@@ -8,7 +8,7 @@
   "info": {
     "description": "Axibase Time Series Data source plugin",
     "author": {
-      "name": "Axibase Inc.",
+      "name": "Axibase",
       "url": "https://axibase.com/products/axibase-time-series-database/"
     },
     "keywords": [
@@ -25,7 +25,7 @@
     "links": [
       {
         "name": "GitHub",
-        "url": "https://github.com/grafana/simple-json-datasource"
+        "url": "https://github.com/axibase/grafana"
       },
       {
         "name": "Apache 2.0 License",
