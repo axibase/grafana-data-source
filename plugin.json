@@ -1,7 +1,7 @@
 {
   "name": "Axibase Time Series Database",
   "type": "datasource",
-  "id": "atsd",
+  "id": "axibase-datasource",
   "staticRoot": ".",
   "metrics": true,
   "annotations": false,
