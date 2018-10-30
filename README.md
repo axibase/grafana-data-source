@@ -11,7 +11,7 @@
 
 ## Overview
 
-[Axibase Time Series Database](https://axibase.com/docs/atsd/) is a non-relational database optimized for collecting, storing, and analyzing temporal data from IT infrastructure, industrial equipment, smart meters, and IoT devices. ATSD features [Network API](https://axibase.com/docs/atsd/api/network/), [REST API](https://axibase.com/docs/atsd/api/data/), [SQL](https://axibase.com/docs/atsd/sql/sql-console.html), and other capabilities to analyze numeric observations and the built-in visualization library [Charts](https://github.com/axibase/charts/blob/master/README.md) to display them. Additionally, use a third-party dashboarding tool such as [Grafana](http://grafana.org/) with data stored in ATSD.
+[Axibase Time Series Database](https://axibase.com/docs/atsd/) is a non-relational database optimized for collecting, storing, and analyzing temporal data from IT infrastructure, industrial equipment, smart meters, and IoT devices. ATSD features [Network API](https://axibase.com/docs/atsd/api/network/), [REST API](https://axibase.com/docs/atsd/api/data/), [SQL](https://axibase.com/docs/atsd/sql/sql-console.html), and other capabilities to analyze numeric observations and the built-in visualization library [Charts](https://github.com/axibase/charts/blob/master/README.md) to display them. Additionally, use the third-party dashboarding tool such as [Grafana](http://grafana.org/) with data stored in ATSD.
 
 ### Requirements
 
@@ -20,7 +20,7 @@
 
 ## Installation
 
-Clone **ATSD Grafana Plugin** repository to the Grafana `plugins` directory. By default, this directory is `/var/lib/grafana/plugins`.
+Clone the **ATSD Grafana Plugin** repository to the Grafana `plugins` directory. By default, this directory is `/var/lib/grafana/plugins`.
 
 ```bash
 sudo git clone https://github.com/axibase/grafana-data-source.git /var/lib/grafana/plugins/atsd
@@ -44,11 +44,11 @@ From the **Data Sources** tab, click **Add data source**
 
 ![](./images/grafana-6.png)
 
-Select **Axibase Time Series Database** from the **Type** drop-down list, and your enter your ATSD instance hostname.
+Select **Axibase Time Series Database** from the **Type** drop-down list, and enter your ATSD instance hostname.
 
 ![](./images/grafana-10.png)
 
-Select **Basic Auth** under the **Auth** header and enter valid login credentials to the ATSD instance.
+Select **Basic Auth** under the **Auth** header and enter valid login credentials to your ATSD instance.
 
 ![](./images/grafana-11.png)
 
@@ -56,17 +56,17 @@ Click **Save & Test**. Grafana notifies that the connection succeeded.
 
 ![](./images/grafana-12.png)
 
-In the event of server connection error, Grafana shows an alert. Confirm login credentials and configuration.
+In the event of server connection error, Grafana shows an alert. Confirm login credentials and configuration. Refer to [Grafana Troubleshooting](http://docs.grafana.org/installation/troubleshooting/) documentation for more information.
 
 ![](./images/grafana-14.png)
 
-On the **Home** page, ATSD is visible under the **Installed Datasources** header.
+On the **Home Dashboard** page, ATSD is visible under the **Installed Datasources** header.
 
 ![](./images/grafana-15.png)
 
 ## Examples
 
-To create dashboards, complete datasource [installation and configuration](#installation)
+To create dashboards, complete datasource [installation and configuration](#installation).
 
 > If you are unfamiliar with Grafana, refer to [Getting Started](http://docs.grafana.org/guides/getting_started/) documentation.
 
@@ -82,7 +82,7 @@ Set **Data Source** to ATSD if you have used a different database as the default
 
 ![](./images/grafana-18.png)
 
-The following configurations demonstrate example Grafana configurations and their associated visualizations:
+The following configurations demonstrate example Grafana visualization:
 
 ### Example 1
 
