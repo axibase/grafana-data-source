@@ -87,7 +87,7 @@ The following configurations demonstrate example Grafana visualization:
 ### Example 1
 
 * Tabular view
-* Tag Selection
+* Tag selection
 * Aggregation
 
 ![](https://raw.githubusercontent.com/axibase/grafana-data-source/master/images/grafana-19.png)
