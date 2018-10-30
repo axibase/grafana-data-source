@@ -90,18 +90,18 @@ The following configurations demonstrate example Grafana visualization:
 * Tag Selection
 * Aggregation
 
-![](./images/examples/example2.png)
+![](./images/grafana-19.png)
 
 ### Example Two
 
 * Entity [wildcard](https://axibase.com/docs/atsd/search/entity-search.html#wildcards) (`*`)
 * Include all tags
 
-![](./images/examples/example3.png)
+![](./images/grafana-20.png)
 
 ### Example Three
 
 * Multiple tags
 * Tag auto-complete feature
 
-![](./images/examples/example4.png)
+![](./images/grafana-21.png)
