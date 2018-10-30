@@ -9,6 +9,8 @@
 * [Installation](#installation)
 * [Examples](#examples)
 
+> If you are having trouble viewing the images in this repository or lack an internet connection on this machine, refer to the [version hosted on GitHub](https://github.com/axibase/grafana-data-source/blob/master/README.md).
+
 ## Overview
 
 [Axibase Time Series Database](https://axibase.com/docs/atsd/) is a non-relational database optimized for collecting, storing, and analyzing temporal data from IT infrastructure, industrial equipment, smart meters, and IoT devices. ATSD features [Network API](https://axibase.com/docs/atsd/api/network/), [REST API](https://axibase.com/docs/atsd/api/data/), [SQL](https://axibase.com/docs/atsd/sql/sql-console.html), and other capabilities to analyze numeric observations and the built-in visualization library [Charts](https://github.com/axibase/charts/blob/master/README.md) to display them. Additionally, use the third-party dashboarding tool [Grafana](http://grafana.org/) with data stored in ATSD.
