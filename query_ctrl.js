@@ -10,9 +10,8 @@ define([
         var AtsdQueryCtrl = (function (_super) {
 
             function AtsdQueryCtrl($scope, $injector) {
-                var self = this;
                 _super.call(this, $scope, $injector);
-
+                var self = this;
                 this.suggest = {
                     metrics: [],
                     entities: [],
@@ -66,13 +65,17 @@ define([
                     }
                 };
 
-
-                this.datasource.getEntities({expression: 'name LIKE \'*\'',}).then(function (result) {
-                    result.forEach(function (item) {
-                        self.suggest.entities.push(item.name);
-                    });
+                console.log(self.suggest.entities);
+                this.suggest.entities = [];
+                console.log(this.datasource);
+                this.datasource.getEntities({}).then(function (result) {
+                    if (result instanceof Array) {
+                        result.forEach(function (item) {
+                            self.suggest.entities.push(item.name);
+                        });
+                    }
                     self.state.isLoaded = false;
-                });
+                }).catch(() => console.log('Failed to retrieve entities'));
             }
 
 
@@ -83,12 +86,16 @@ define([
             AtsdQueryCtrl.prototype.entityBlur = function ($event) {
                 this.refresh();
                 var self = this;
-                this.datasource.getMetrics(this.target.entity, {}).then(function (result) {
-                    self.suggest.metrics.length = 0;
-                    result.forEach(function (item) {
-                        self.suggest.metrics.push(item.name);
+                if (this.target.entity) {
+                    this.datasource.getMetrics(this.target.entity, {}).then(function (result) {
+                        self.suggest.metrics = [];
+                        if (result instanceof Array) {
+                            result.forEach(function (item) {
+                                self.suggest.metrics.push(item.name);
+                            })
+                        }
                     })
-                })
+                }
             };
 
             AtsdQueryCtrl.prototype.metricBlur = function () {

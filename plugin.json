@@ -19,8 +19,8 @@
       "hadoop"
     ],
     "logos": {
-      "small": "img/axibase_logo_small.svg",
-      "large": "img/axibase_logo_large.svg"
+      "small": "images/axibase_logo_small.svg",
+      "large": "images/axibase_logo_large.svg"
     },
     "links": [
       {
