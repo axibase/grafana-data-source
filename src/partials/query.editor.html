@@ -3,7 +3,7 @@
         <!--Row format-->
         <div class="gf-form" ng-if="ctrl.target.rawQuery">
         <textarea class="gf-form-input" rows="5" ng-model="ctrl.target.target" spellcheck="false"
-                  ng-blur="ctrl.onChangeInternal()"/>
+                  ng-blur="ctrl.onChangeInternal()"></textarea>
         </div>
         <!--Expanded view-->
 
@@ -128,8 +128,7 @@
                    spellcheck='false'
                    placeholder="value"
                    ng-model="ctrl.segments.tagEditor.value"
-                   bs-typeahead="ctrl.suggest.tags.values"
-            >
+                   bs-typeahead="ctrl.suggest.tags.values">
             <a class="gf-form-label pointer"
                ng-click="ctrl.saveTag()">
                 <i class="fa fa-check"/>
