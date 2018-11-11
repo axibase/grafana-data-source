@@ -32,8 +32,8 @@
         "url": "https://github.com/axibase/grafana/blob/master/LICENSE"
       }
     ],
-    "version": "0.0.1",
-    "updated": "2016-09-11"
+    "version": "0.0.3",
+    "updated": "2018-11-11"
   },
   "dependencies": {
     "grafanaVersion": "3.x.x",
