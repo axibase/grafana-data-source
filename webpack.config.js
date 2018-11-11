@@ -5,6 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 
 const packageJson = require('./package.json');
+const pluginJson = require('./src/plugin.json');
 
 module.exports = {
   node: {
@@ -50,6 +51,14 @@ module.exports = {
       }, {
         search: '%TODAY%',
         replace: (new Date()).toISOString().substring(0, 10),
+      }],
+    }]),
+    new ReplaceInFileWebpackPlugin([{
+      dir: path.join(__dirname, 'dist'),
+      files: ['README.MD'],
+      rules: [{
+        search: /\(src\/img/g,
+        replace: '(/public/plugins/' + pluginJson.id + '/img',
       }],
     }]),
   ],
