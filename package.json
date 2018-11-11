@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "description": "Axibase Time Series Database Graphana Datasource plugin",
   "author": "Axibase",
-  "homepage": "grafana-data-source",
+  "homepage": "https://github.com/axibase/grafana-data-source",
   "license": "Apache-2.0",
   "scripts": {
     "build": "webpack --config webpack.config.prod.js",
