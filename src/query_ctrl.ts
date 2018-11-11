@@ -41,6 +41,7 @@ export class AtsdQueryCtrl extends QueryCtrl {
   private segments: Segment;
   private state: State;
 
+  /** @ngInject */
   constructor($scope, $injector) {
     super($scope, $injector);
 

@@ -53,3 +53,21 @@ export function _convertToSeconds(interval) {
 
   return count;
 }
+
+export interface GrafanaTag {
+  key: string;
+  value: string;
+}
+
+
+export function convertTags(grafanaTags: Array<GrafanaTag>) {
+  const tags = {};
+  grafanaTags.forEach(item => {
+    if (tags[item.key]) {
+      tags[item.key].push(item.value);
+    } else {
+      tags[item.key] = [item.value];
+    }
+  });
+  return tags;
+}

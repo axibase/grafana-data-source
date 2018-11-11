@@ -1,11 +1,11 @@
-import angular from 'angular';
 import _ from 'lodash';
-import {_convertToAtsdTime, _convertToSeconds, _parsePeriod, _transformMetricData} from './convertutils';
+import {_convertToAtsdTime, _convertToSeconds, _parsePeriod, _transformMetricData, convertTags} from './convertutils';
 
 export default class AtsdDatasource {
   private readonly url: string;
   private readonly basicAuth: string;
 
+  /** @ngInject */
   constructor(instanceSettings, private backendSrv, private templateSrv, private $q) {
     this.url = instanceSettings.url;
     this.basicAuth = instanceSettings.basicAuth;
@@ -203,25 +203,15 @@ export default class AtsdDatasource {
     if (!target.metric || !target.entity || target.hide) {
       return null;
     }
-
-    const query = {
+    return {
       entity: this.templateSrv.replace(target.entity),
       metric: this.templateSrv.replace(target.metric),
-
       aggregation: target.aggregation.type !== undefined ? target.aggregation : undefined,
-      tagCombos: angular.copy(target.tagCombos),
-      implicit: angular.copy(target.implicit),
-      tags: {},
+      tags: convertTags(target.tags),
       disconnect:
         target.disconnect !== undefined && target.disconnect !== ''
           ? _convertToSeconds(_parsePeriod(target.disconnect))
           : 24 * 60 * 60,
     };
-
-    target.tags.forEach(item => {
-      query.tags[item.key] = item.value;
-    });
-
-    return query;
   }
 }

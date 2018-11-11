@@ -5,20 +5,20 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   node: {
-		fs: 'empty'
-	},
+    fs: 'empty',
+  },
   context: path.join(__dirname, 'src'),
   entry: {
     'module': './module.ts',
-	},
+  },
   devtool: 'source-map',
   output: {
     filename: '[name].js',
     path: path.join(__dirname, 'dist'),
-    libraryTarget: 'amd'
+    libraryTarget: 'amd',
   },
   externals: [
-    'lodash', 'moment','angular',
+    'lodash', 'moment',
     function(context, request, callback) {
       var prefix = 'grafana/';
       if (request.indexOf(prefix) === 0) {
@@ -26,21 +26,21 @@ module.exports = {
         return callback(null, request.substr(prefix.length));
       }
       callback();
-    }
+    },
   ],
   plugins: [
-    new CleanWebpackPlugin('dist', { allowExternal: true }),
+    new CleanWebpackPlugin('dist', {allowExternal: true}),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new CopyWebpackPlugin([
-      { from: 'plugin.json', to: '.' },
-      { from: '../README.md', to: '.' },
-      { from: '../LICENSE', to: '.' },
-      { from: 'partials/*', to: '.' },
-      { from: 'img/*', to: '.' },
+      {from: 'plugin.json', to: '.'},
+      {from: '../README.md', to: '.'},
+      {from: '../LICENSE', to: '.'},
+      {from: 'partials/*', to: '.'},
+      {from: 'img/*', to: '.'},
     ]),
   ],
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
@@ -49,9 +49,9 @@ module.exports = {
         loaders: [
           {
             loader: 'babel-loader',
-            options: { presets: ['env'] }
+            options: {presets: ['env']},
           },
-          'ts-loader'
+          'ts-loader',
         ],
         exclude: /(node_modules)/,
       },
@@ -59,17 +59,17 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
-        ]
-      }
-    ]
-  }
-}
+        ],
+      },
+    ],
+  },
+};

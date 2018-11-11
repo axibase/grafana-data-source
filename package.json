@@ -1,9 +1,9 @@
 {
   "name": "atsd-grafana-datasource",
   "version": "0.0.1",
-  "description": "Axibase Time Series Database Graphana Plugin",
+  "description": "Axibase Time Series Database Graphana Datasource plugin",
   "author": "Axibase",
-  "license": "Apache",
+  "license": "Apache-2.0",
   "scripts": {
     "build": "webpack --config webpack.config.prod.js",
     "dev": "webpack --mode development",
