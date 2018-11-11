@@ -1,6 +1,6 @@
 # ATSD Grafana Plugin
 
-![](https://raw.githubusercontent.com/axibase/grafana-data-source/master/images/axibase-and-grafana.png)
+![](src/img/axibase-and-grafana.png)
 
 ## Table of Contents
 
