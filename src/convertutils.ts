@@ -59,7 +59,6 @@ export interface GrafanaTag {
   value: string;
 }
 
-
 export function convertTags(grafanaTags: Array<GrafanaTag>) {
   const tags = {};
   grafanaTags.forEach(item => {

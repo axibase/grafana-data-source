@@ -93,12 +93,12 @@ export class AtsdQueryCtrl extends QueryCtrl {
     this.target.aggregation = this.target.aggregation
       ? this.target.aggregation
       : {
-        type: this.suggest.aggregation.types[0].value,
-        period: {
-          count: 1,
-          unit: this.suggest.aggregation.period.units[3].value,
-        },
-      };
+          type: this.suggest.aggregation.types[0].value,
+          period: {
+            count: 1,
+            unit: this.suggest.aggregation.period.units[3].value,
+          },
+        };
 
     this.suggest.entities = [];
     this.datasource
@@ -132,15 +132,16 @@ export class AtsdQueryCtrl extends QueryCtrl {
       'Wtavg',
       'Standard_deviation',
     ];
-    return _.map(
-      aggregateTypes,
-      item => item ? {
-        label: item,
-        value: item.toUpperCase(),
-      } : {
-        label: 'None',
-        value: item,
-      },
+    return _.map(aggregateTypes, item =>
+      item
+        ? {
+            label: item,
+            value: item.toUpperCase(),
+          }
+        : {
+            label: 'None',
+            value: item,
+          }
     );
   }
 

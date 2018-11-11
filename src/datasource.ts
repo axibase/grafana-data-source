@@ -1,5 +1,11 @@
 import _ from 'lodash';
-import {_convertToAtsdTime, _convertToSeconds, _parsePeriod, _transformMetricData, convertTags} from './convertutils';
+import {
+  _convertToAtsdTime,
+  _convertToSeconds,
+  _parsePeriod,
+  _transformMetricData,
+  convertTags,
+} from './convertutils';
 
 export default class AtsdDatasource {
   private readonly url: string;
@@ -137,7 +143,7 @@ export default class AtsdDatasource {
         Authorization: this.basicAuth,
       },
     };
-    return this.httpRequest(options).then((result) => {
+    return this.httpRequest(options).then(result => {
       return result.data;
     });
   }
@@ -151,7 +157,7 @@ export default class AtsdDatasource {
         Authorization: this.basicAuth,
       },
     };
-    return this.httpRequest(options).then((result) => {
+    return this.httpRequest(options).then(result => {
       return result.data;
     });
   }
