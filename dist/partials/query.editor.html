@@ -1,0 +1,142 @@
+<query-editor-row query-ctrl="ctrl" can-collapse="false" has-text-edit-mode="true">
+    <div ng-if="!ctrl.target.rawQuery">
+        <!--Row format-->
+        <div class="gf-form" ng-if="ctrl.target.rawQuery">
+        <textarea class="gf-form-input" rows="5" ng-model="ctrl.target.target" spellcheck="false"
+                  ng-blur="ctrl.onChangeInternal()"></textarea>
+        </div>
+        <!--Expanded view-->
+
+
+        <!--Entity, Metric row-->
+        <div class="gf-form gf-form--grow">
+            <label class="gf-form-label query-keyword width-10">ENTITY</label>
+            <input type="text"
+                   class="gf-form-input"
+                   ng-model="ctrl.target.entity"
+                   ng-blur="ctrl.entityBlur($event)"
+                   bs-typeahead="ctrl.suggest.entities"
+                   spellcheck='false'
+                   placeholder="entity name"
+            >
+            <label class="gf-form-label query-keyword width-10">METRIC</label>
+
+            <input type="text"
+                   class="gf-form-input"
+                   ng-model="ctrl.target.metric"
+                   spellcheck='false'
+                   ng-blur="ctrl.refresh()"
+                   bs-typeahead="ctrl.suggest.metrics"
+                   placeholder="metric name"
+                   ng-blur="ctrl.metricBlur()"
+            >
+        </div>
+
+        <!--Aggregation row-->
+        <div class="gf-form">
+            <label class="gf-form-label query-keyword width-10">AGGREGATION</label>
+            <div class="gf-form-select-wrapper query">
+                <select class="gf-form-input gf-size-auto"
+                        ng-model="ctrl.target.aggregation.type"
+                        ng-options="item.value as item.label for item in ctrl.suggest.aggregation.types"
+                        ng-change="ctrl.refresh()"
+                >
+                </select>
+            </div>
+            <div class="gf-form" ng-if="ctrl.target.aggregation.type">
+                <label class="gf-form-label query-keyword width-10">PERIOD</label>
+                <input class="gf-form-input gf-size-auto"
+                       type="number"
+                       name="count"
+                       min="1"
+                       max="9999"
+                       ng-model="ctrl.target.aggregation.period.count"
+                       ng-change="ctrl.refresh()"
+                >
+                <div class="gf-form-select-wrapper query">
+                    <select class="gf-form-input gf-size-auto"
+                            ng-model="ctrl.target.aggregation.period.unit"
+                            ng-options="item.value as item.label for item in ctrl.suggest.aggregation.period.units"
+                            ng-change="ctrl.refresh()"
+                    >
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!--Tags row-->
+        <div class="gf-form">
+            <label class="gf-form-label query-keyword width-10">TAGS SELECTOR</label>
+            <div class="gf-form-inline">
+                <div class="gf-form" ng-repeat="tag in ctrl.target.tags">
+                    <div class="gf-form-label  query-segment-value"
+                         ng-class="{'query-segment-operator': ctrl.state.tagRow.tags[$index].selected}"
+                         ng-mouseenter="ctrl.tagMouseover($index)"
+                         ng-mouseleave="ctrl.tagMouseleave($index)"
+                    >
+                        <span>{{tag.key}}</span>
+                        <span class="fa query-segment-operator">=</span>
+                        <span>{{tag.value}}</span>
+                        <span ng-if="ctrl.state.tagRow.tags[$index].selected">
+                            <a class="query-segment-operator"
+                               ng-click="ctrl.showTagEditor($index)">
+                                <i class="fa fa-pencil"/>
+
+                            </a>
+                            <a class="query-segment-operator"
+                               ng-click="ctrl.tagRemove($index)">
+                                <i class="fa fa-trash"/>
+
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <a class="gf-form-label pointer"
+                   ng-click="ctrl.showTagEditor()"
+                   ng-if="ctrl.state.tagRow.canAdd"
+                >
+                    <i class="fa fa-plus"/>
+                </a>
+                <a class="gf-form-label pointer"
+                   ng-click="ctrl.removeAllTags()"
+                   ng-if="ctrl.state.tagRow.canAdd"
+                >
+                    <i class="fa fa-trash"/>
+                </a>
+            </div>
+        </div>
+        <div class="gf-form gf-form--grow" ng-if="ctrl.state.tagRow.isEdit">
+            <div class="width-5">
+
+            </div>
+            <label class="gf-form-label query-segment-operator width-10">{{ctrl.segments.tagEditor.editIndex>=0?'EDIT':'NEW'}}</label>
+            <input type="text"
+                   class="gf-form-input"
+                   spellcheck='false'
+                   placeholder="name"
+                   ng-model="ctrl.segments.tagEditor.key"
+                   bs-typeahead="ctrl.suggest.tags.keys"
+                   ng-blur="ctrl.suggestTags()"
+            >
+            <a class="gf-form-label fa query-segment-operator">
+                =
+            </a>
+            <input type="text"
+                   class="gf-form-input"
+                   spellcheck='false'
+                   placeholder="value"
+                   ng-model="ctrl.segments.tagEditor.value"
+                   bs-typeahead="ctrl.suggest.tags.values">
+            <a class="gf-form-label pointer"
+               ng-click="ctrl.saveTag()">
+                <i class="fa fa-check"/>
+            </a>
+            <a class="gf-form-label pointer"
+               ng-click="ctrl.closeTagEditor()">
+                <i class="fa fa-close"/>
+            </a>
+        </div>
+    </div>
+</query-editor-row>
