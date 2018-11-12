@@ -22,12 +22,16 @@ export interface Entity {
   name: string;
 }
 
+export interface Table {
+  name: string;
+}
+
 interface BaseSettings {
   basicAuth: string;
   proxyUrl: string;
 }
 
-interface AtsdVersion {
+export interface AtsdVersion {
   buildInfo: {
     revisionNumber: string;
     hbaseVersion?: string;
@@ -54,20 +58,21 @@ export class AtsdClient {
   constructor(private transport: HttpTransport, private baseSettings: BaseSettings) {
   }
 
-  metrics(entityName: string): Promise<Array<Metric>> {
+  metrics(entityName: string, tableName?: string): Promise<Array<Metric>> {
     const options = {
       method: 'GET',
       url: `entities/${entityName}/metrics`,
+      params: tableName ? {table: tableName} : undefined,
     };
-
-    return this.baseRequest(options);
+    return this.baseRequest(options)
+      .then(arr => (arr instanceof Array) ? arr : []);
   }
 
   entities(): Promise<Array<Entity>> {
     return this.baseRequest({
       method: 'GET',
       url: `entities`,
-    });
+    }).then(arr => (arr instanceof Array) ? arr : []);
   }
 
   version(): Promise<AtsdVersion> {
@@ -83,7 +88,7 @@ export class AtsdClient {
     return this.baseRequest({
       method: 'GET',
       url: `metrics/${metricName}/series`,
-    });
+    }).then(arr => (arr instanceof Array) ? arr : []);
   }
 
   querySeries(q: any[]): Promise<any[]> {
@@ -92,6 +97,13 @@ export class AtsdClient {
       method: 'POST',
       data: q,
     }));
+  }
+
+  tables(entityName: string): Promise<Table[]> {
+    return this.baseRequest({
+      method: 'GET',
+      url: `entities/${entityName}/tables`,
+    }).then(arr => (arr instanceof Array) ? arr : []);
   }
 
   private baseRequest(options): Promise<any> {

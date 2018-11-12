@@ -1,16 +1,27 @@
 import _ from 'lodash';
 import {_convertToAtsdTime, _convertToSeconds, _parsePeriod, _transformMetricData, convertTags} from './convertutils';
 import {BackendSrv} from 'grafana/app/core/services/backend_srv';
-import {AtsdClient, Entity} from './atsd_client';
+import {AtsdClient, AtsdVersion, Entity, Table} from './atsd_client';
 
 
 export enum DatasourceType {
   ATSD, AS
 }
 
+
 export default class AtsdDatasource {
+  get version(): AtsdVersion {
+    if (this._version) {
+      return this._version;
+    }
+    (async () => {
+      this._version = await this.client.version();
+    })();
+    return this._version;
+  }
 
   private readonly client: AtsdClient;
+  private _version: AtsdVersion;
 
   /** @ngInject */
   constructor(instanceSettings, private backendSrv: BackendSrv, private templateSrv, private $q) {
@@ -51,7 +62,9 @@ export default class AtsdDatasource {
       if (response.data === undefined) {
         return {data: []};
       }
-      const result = response.data.map(_transformMetricData);
+      const result = response.data
+        .filter(s => s && s.tags && !Object.keys(s.tags).map(k => s.tags[k]).every(v => v === '*'))
+        .map(_transformMetricData);
       result.sort((a, b) => {
         const nameA = a.target.toLowerCase();
         const nameB = b.target.toLowerCase();
@@ -70,7 +83,6 @@ export default class AtsdDatasource {
 
   private _performTimeSeriesQuery(queries, start, end) {
     const tsQueries: any[] = [];
-
     _.each(queries, query => {
       if (query.entity !== '' && query.metric !== '') {
         if (query.implicit) {
@@ -88,7 +100,7 @@ export default class AtsdDatasource {
                   endDate: end,
                   limit: 10000,
                   entity: query.entity,
-                  metric: query.metric,
+                  metric: query.table ? `${query.table},${query.metric}` : query.metric,
                   tags: tags,
                   timeFormat: 'milliseconds',
                   aggregate: query.aggregation,
@@ -108,7 +120,7 @@ export default class AtsdDatasource {
             endDate: end,
             limit: 10000,
             entity: query.entity,
-            metric: query.metric,
+            metric: query.table ? `${query.table},${query.metric}` : query.metric,
             tags: tags,
             timeFormat: 'milliseconds',
             aggregate: query.aggregation,
@@ -123,15 +135,16 @@ export default class AtsdDatasource {
       return d.promise;
     }
 
-    return this.client.querySeries(tsQueries);
+    return this.client.querySeries(tsQueries)
+      .catch(resp => console.log(resp.data));
   }
 
   getEntities(): Promise<Array<Entity>> {
     return this.client.entities();
   }
 
-  getMetrics(entity) {
-    return this.client.metrics(entity);
+  getMetrics(entity: string, table?: string) {
+    return this.client.metrics(entity, table);
   }
 
   getMetricSeries(metric) {
@@ -140,6 +153,10 @@ export default class AtsdDatasource {
 
   getVersion() {
     return this.client.version();
+  }
+
+  getTables(entityName): Promise<Table[]> {
+    return this.client.tables(entityName);
   }
 
   testDatasource() {
