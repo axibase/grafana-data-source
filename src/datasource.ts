@@ -1,13 +1,18 @@
 import _ from 'lodash';
-import {_convertToAtsdTime, _convertToSeconds, _parsePeriod, _transformMetricData, convertTags} from './convertutils';
+import {
+  _convertToAtsdTime,
+  _convertToSeconds,
+  _parsePeriod,
+  _transformMetricData,
+  convertTags,
+} from './convertutils';
 import {BackendSrv} from 'grafana/app/core/services/backend_srv';
 import {AtsdClient, AtsdVersion, Entity, Table} from './atsd_client';
 
-
 export enum DatasourceType {
-  ATSD, AS
+  ATSD,
+  AS,
 }
-
 
 export default class AtsdDatasource {
   get version(): AtsdVersion {
@@ -24,13 +29,17 @@ export default class AtsdDatasource {
   private _version: AtsdVersion;
 
   /** @ngInject */
-  constructor(instanceSettings, private backendSrv: BackendSrv, private templateSrv, private $q) {
+  constructor(
+    instanceSettings,
+    private backendSrv: BackendSrv,
+    private templateSrv,
+    private $q
+  ) {
     this.client = new AtsdClient(this.backendSrv, {
       proxyUrl: instanceSettings.url,
       basicAuth: instanceSettings.basicAuth,
     });
   }
-
 
   query(options) {
     const start = _convertToAtsdTime(options.range.from);
@@ -63,7 +72,14 @@ export default class AtsdDatasource {
         return {data: []};
       }
       const result = response.data
-        .filter(s => s && s.tags && !Object.keys(s.tags).map(k => s.tags[k]).every(v => v === '*'))
+        .filter(
+          s =>
+            s &&
+            s.tags &&
+            !Object.keys(s.tags)
+              .map(k => s.tags[k])
+              .every(v => v === '*')
+        )
         .map(_transformMetricData);
       result.sort((a, b) => {
         const nameA = a.target.toLowerCase();
@@ -135,8 +151,7 @@ export default class AtsdDatasource {
       return d.promise;
     }
 
-    return this.client.querySeries(tsQueries)
-      .catch(resp => console.log(resp.data));
+    return this.client.querySeries(tsQueries).catch(resp => console.log(resp.data));
   }
 
   getEntities(): Promise<Array<Entity>> {

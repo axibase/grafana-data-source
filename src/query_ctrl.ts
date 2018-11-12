@@ -95,13 +95,15 @@ export class AtsdQueryCtrl extends QueryCtrl {
     }
     this.model.entity = this.model.entity ? this.model.entity : undefined;
     this.model.metric = this.model.metric ? this.model.metric : undefined;
-    this.model.aggregation = this.model.aggregation ? this.model.aggregation : {
-      type: this.suggest.aggregation.types[0].value,
-      period: {
-        count: 1,
-        unit: this.suggest.aggregation.period.units[3].value,
-      },
-    };
+    this.model.aggregation = this.model.aggregation
+      ? this.model.aggregation
+      : {
+          type: this.suggest.aggregation.types[0].value,
+          period: {
+            count: 1,
+            unit: this.suggest.aggregation.period.units[3].value,
+          },
+        };
 
     this.suggest.entities = [];
     this.datasource
@@ -111,40 +113,42 @@ export class AtsdQueryCtrl extends QueryCtrl {
         this.state.isLoaded = false;
       })
       .catch(err => console.log(err));
-    this.datasource.getVersion()
-      .then(v => {
-        this.state.showAggregation = !!v.buildInfo.hbaseVersion;
-        if (!this.state.showAggregation) {
-          this.model.aggregation = {
-            type: this.suggest.aggregation.types[0].value,
-            period: {
-              count: 1,
-              unit: this.suggest.aggregation.period.units[3].value,
-            },
-          };
-        }
-        if (this.model.entity) {
-          if (this.state.showAggregation) {
-            this.model.metric = this.target.metric;
+    this.datasource.getVersion().then(v => {
+      this.state.showAggregation = !!v.buildInfo.hbaseVersion;
+      if (!this.state.showAggregation) {
+        this.model.aggregation = {
+          type: this.suggest.aggregation.types[0].value,
+          period: {
+            count: 1,
+            unit: this.suggest.aggregation.period.units[3].value,
+          },
+        };
+      }
+      if (this.model.entity) {
+        if (this.state.showAggregation) {
+          this.model.metric = this.target.metric;
+        } else {
+          const commaPos = this.target.metric.indexOf(',');
+          if (commaPos > -1) {
+            this.model.table = this.target.metric.substr(0, commaPos);
+            this.model.metric = this.target.metric.substr(commaPos + 1);
           } else {
-            const commaPos = this.target.metric.indexOf(',');
-            if (commaPos > -1) {
-              this.model.table = this.target.metric.substr(0, commaPos);
-              this.model.metric = this.target.metric.substr(commaPos + 1);
-            } else {
-              this.model.metric = this.target.metric;
-            }
+            this.model.metric = this.target.metric;
           }
-          this.entityBlur();
         }
-      });
+        this.entityBlur();
+      }
+    });
   }
 
   refresh() {
-    for (const k of  Object.keys(this.model)) {
+    for (const k of Object.keys(this.model)) {
       this.target[k] = this.model[k];
     }
-    this.target.metric = (this.model.metric && this.model.table) ? `${this.model.table},${this.model.metric}` : this.model.metric;
+    this.target.metric =
+      this.model.metric && this.model.table
+        ? `${this.model.table},${this.model.metric}`
+        : this.model.metric;
     super.refresh();
   }
 
@@ -173,13 +177,13 @@ export class AtsdQueryCtrl extends QueryCtrl {
     return _.map(aggregateTypes, item =>
       item
         ? {
-          label: item,
-          value: item.toUpperCase(),
-        }
+            label: item,
+            value: item.toUpperCase(),
+          }
         : {
-          label: 'None',
-          value: item,
-        },
+            label: 'None',
+            value: item,
+          }
     );
   }
 
@@ -229,12 +233,10 @@ export class AtsdQueryCtrl extends QueryCtrl {
     if (this.model.entity) {
       if (this.state.showAggregation !== undefined) {
         if (this.state.showAggregation) {
-
         } else {
           this.datasource.getTables(this.model.entity).then(tables => {
             this.suggest.tables = tables.map(t => t.name);
             this.suggest.metrics = [];
-
           });
         }
         this.fetchSuggestMetric();
@@ -243,13 +245,16 @@ export class AtsdQueryCtrl extends QueryCtrl {
   }
 
   private fetchSuggestMetric() {
-    this.datasource.getMetrics(this.model.entity, this.model.table).then((result: Array<Metric>) => {
-      this.suggest.metrics = result.map(m => m.name);
-      if (this.state.showAggregation === false && this.model.table) {
-        this.suggest.metrics = this.suggest.metrics
-          .map(name => name.substr(this.model.table.length + 1));
-      }
-    });
+    this.datasource
+      .getMetrics(this.model.entity, this.model.table)
+      .then((result: Array<Metric>) => {
+        this.suggest.metrics = result.map(m => m.name);
+        if (this.state.showAggregation === false && this.model.table) {
+          this.suggest.metrics = this.suggest.metrics.map(name =>
+            name.substr(this.model.table.length + 1)
+          );
+        }
+      });
   }
 
   tableBlur() {
