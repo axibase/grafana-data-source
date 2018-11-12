@@ -1,23 +1,25 @@
 import _ from 'lodash';
-import {
-  _convertToAtsdTime,
-  _convertToSeconds,
-  _parsePeriod,
-  _transformMetricData,
-  convertTags,
-} from './convertutils';
+import {_convertToAtsdTime, _convertToSeconds, _parsePeriod, _transformMetricData, convertTags} from './convertutils';
+import {BackendSrv} from 'grafana/app/core/services/backend_srv';
+import {AtsdClient, Entity} from './atsd_client';
+
+
+export enum DatasourceType {
+  ATSD, AS
+}
 
 export default class AtsdDatasource {
-  private readonly url: string;
-  private readonly basicAuth: string;
+
+  private readonly client: AtsdClient;
 
   /** @ngInject */
-  constructor(instanceSettings, private backendSrv, private templateSrv, private $q) {
-    this.url = instanceSettings.url;
-    this.basicAuth = instanceSettings.basicAuth;
-    this.templateSrv = templateSrv;
-    this.backendSrv = backendSrv;
+  constructor(instanceSettings, private backendSrv: BackendSrv, private templateSrv, private $q) {
+    this.client = new AtsdClient(this.backendSrv, {
+      proxyUrl: instanceSettings.url,
+      basicAuth: instanceSettings.basicAuth,
+    });
   }
+
 
   query(options) {
     const start = _convertToAtsdTime(options.range.from);
@@ -62,7 +64,6 @@ export default class AtsdDatasource {
           return 0;
         }
       });
-
       return {data: result};
     });
   }
@@ -122,87 +123,31 @@ export default class AtsdDatasource {
       return d.promise;
     }
 
-    const options = {
-      method: 'POST',
-      url: this.fullUrl('/api/v1/series/query'),
-      data: tsQueries,
-      headers: {
-        Authorization: this.basicAuth,
-      },
-    };
-
-    return this.backendSrv.datasourceRequest(options).then(result => result);
+    return this.client.querySeries(tsQueries);
   }
 
-  getEntities(params) {
-    const options = {
-      method: 'GET',
-      url: this.fullUrl('/api/v1/entities'),
-      params: params,
-      headers: {
-        Authorization: this.basicAuth,
-      },
-    };
-    return this.httpRequest(options).then(result => {
-      return result.data;
-    });
+  getEntities(): Promise<Array<Entity>> {
+    return this.client.entities();
   }
 
-  getMetrics(entity, params) {
-    const options = {
-      method: 'GET',
-      url: this.fullUrl('/api/v1/entities/' + entity + '/metrics'),
-      params: params,
-      headers: {
-        Authorization: this.basicAuth,
-      },
-    };
-    return this.httpRequest(options).then(result => {
-      return result.data;
-    });
+  getMetrics(entity) {
+    return this.client.metrics(entity);
   }
 
-  getMetricSeries(metric, params) {
-    const options = {
-      method: 'GET',
-      url: this.fullUrl('/api/v1/metrics/' + metric + '/series'),
-      params: params,
-      headers: {
-        Authorization: this.basicAuth,
-      },
-    };
-    return this.httpRequest(options).then(result => result.data);
+  getMetricSeries(metric) {
+    return this.client.metricSeries(metric);
+  }
+
+  getVersion() {
+    return this.client.version();
   }
 
   testDatasource() {
-    const options = {
-      method: 'POST',
-      url: this.fullUrl('/api/v1/series/query'),
-      data: [],
-      headers: {
-        Authorization: this.basicAuth,
-      },
-    };
-    return this.httpRequest(options).then(() => ({
+    return this.client.version().then(() => ({
       status: 'success',
       message: 'Data source is working',
       title: 'Success',
     }));
-  }
-
-  httpRequest(options) {
-    if (!options.cache) {
-      options.cache = true;
-    }
-    return this.backendSrv.datasourceRequest(options);
-  }
-
-  fullUrl(part) {
-    const fullUrl = this.url[this.url.length - 1] !== '/' ? this.url + '/' : this.url;
-    if (!(part.length <= 0 || part[0] !== '/')) {
-      part = part.substr(1, part.length - 1);
-    }
-    return fullUrl + part;
   }
 
   private _convertTargetToQuery(target) {

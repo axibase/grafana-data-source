@@ -16,6 +16,7 @@ interface Suggestion {
 
 interface State {
   isLoaded: boolean;
+  showAggregation: boolean;
   tagRow: {
     isEdit: boolean;
     canAdd: boolean;
@@ -70,6 +71,7 @@ export class AtsdQueryCtrl extends QueryCtrl {
 
     this.state = {
       isLoaded: true,
+      showAggregation: false,
       tagRow: {
         isEdit: false,
         canAdd: true,
@@ -93,21 +95,23 @@ export class AtsdQueryCtrl extends QueryCtrl {
     this.target.aggregation = this.target.aggregation
       ? this.target.aggregation
       : {
-          type: this.suggest.aggregation.types[0].value,
-          period: {
-            count: 1,
-            unit: this.suggest.aggregation.period.units[3].value,
-          },
-        };
+        type: this.suggest.aggregation.types[0].value,
+        period: {
+          count: 1,
+          unit: this.suggest.aggregation.period.units[3].value,
+        },
+      };
 
     this.suggest.entities = [];
     this.datasource
-      .getEntities({})
+      .getEntities()
       .then(result => {
         result.forEach(item => this.suggest.entities.push(item.name));
         this.state.isLoaded = false;
       })
-      .catch(() => console.log('Failed to retrieve entities'));
+      .catch(err => console.log(err));
+    this.datasource.getVersion()
+      .then(v => this.state.showAggregation = !!v.buildInfo.hbaseVersion);
   }
 
   private static aggregateOptions() {
@@ -135,13 +139,13 @@ export class AtsdQueryCtrl extends QueryCtrl {
     return _.map(aggregateTypes, item =>
       item
         ? {
-            label: item,
-            value: item.toUpperCase(),
-          }
+          label: item,
+          value: item.toUpperCase(),
+        }
         : {
-            label: 'None',
-            value: item,
-          }
+          label: 'None',
+          value: item,
+        },
     );
   }
 
@@ -189,13 +193,11 @@ export class AtsdQueryCtrl extends QueryCtrl {
   entityBlur() {
     this.refresh();
     if (this.target.entity) {
-      this.datasource.getMetrics(this.target.entity, {}).then((result: Array<Metric>) => {
+      this.datasource.getMetrics(this.target.entity).then((result: Array<Metric>) => {
         this.suggest.metrics = [];
-        if (result instanceof Array) {
-          result.forEach(item => {
-            this.suggest.metrics.push(item.name);
-          });
-        }
+        result.forEach(item => {
+          this.suggest.metrics.push(item.name);
+        });
       });
     }
   }
@@ -291,7 +293,7 @@ export class AtsdQueryCtrl extends QueryCtrl {
       if (this.target.entity) {
         params.entity = this.target.entity;
       }
-      this.datasource.getMetricSeries(this.target.metric, params).then(series => {
+      this.datasource.getMetricSeries(this.target.metric).then(series => {
         this.suggest.tags.keys.length = 0;
         this.suggest.tags.values.length = 0;
         series.forEach(item => {
