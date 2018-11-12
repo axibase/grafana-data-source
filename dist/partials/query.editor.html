@@ -1,9 +1,9 @@
 <query-editor-row query-ctrl="ctrl" can-collapse="false" has-text-edit-mode="true">
-    <div ng-if="!ctrl.target.rawQuery">
+    <div ng-if="!ctrl.model.rawQuery">
         <!--Row format-->
-        <div class="gf-form" ng-if="ctrl.target.rawQuery">
-        <textarea class="gf-form-input" rows="5" ng-model="ctrl.target.target" spellcheck="false"
-                  ng-blur="ctrl.onChangeInternal()"/>
+        <div class="gf-form" ng-if="ctrl.model.rawQuery">
+        <textarea class="gf-form-input" rows="5" ng-model="ctrl.model" spellcheck="false"
+                  ng-blur="ctrl.onChangeInternal()"></textarea>
         </div>
         <!--Expanded view-->
 
@@ -13,19 +13,29 @@
             <label class="gf-form-label query-keyword width-10">ENTITY</label>
             <input type="text"
                    class="gf-form-input"
-                   ng-model="ctrl.target.entity"
+                   ng-model="ctrl.model.entity"
                    ng-blur="ctrl.entityBlur($event)"
                    bs-typeahead="ctrl.suggest.entities"
                    spellcheck='false'
                    placeholder="entity name"
             >
+            <label ng-if="!ctrl.state.showAggregation" class="gf-form-label query-keyword width-10">TABLE</label>
+
+            <input ng-if="!ctrl.state.showAggregation" type="text"
+                   class="gf-form-input"
+                   ng-model="ctrl.model.table"
+                   spellcheck='false'
+                   bs-typeahead="ctrl.suggest.tables"
+                   placeholder="table name"
+                   ng-blur="ctrl.tableBlur()"
+            >
+
             <label class="gf-form-label query-keyword width-10">METRIC</label>
 
             <input type="text"
                    class="gf-form-input"
-                   ng-model="ctrl.target.metric"
+                   ng-model="ctrl.model.metric"
                    spellcheck='false'
-                   ng-blur="ctrl.refresh()"
                    bs-typeahead="ctrl.suggest.metrics"
                    placeholder="metric name"
                    ng-blur="ctrl.metricBlur()"
@@ -33,29 +43,29 @@
         </div>
 
         <!--Aggregation row-->
-        <div class="gf-form">
+        <div ng-if="ctrl.state.showAggregation" class="gf-form">
             <label class="gf-form-label query-keyword width-10">AGGREGATION</label>
             <div class="gf-form-select-wrapper query">
                 <select class="gf-form-input gf-size-auto"
-                        ng-model="ctrl.target.aggregation.type"
+                        ng-model="ctrl.model.aggregation.type"
                         ng-options="item.value as item.label for item in ctrl.suggest.aggregation.types"
                         ng-change="ctrl.refresh()"
                 >
                 </select>
             </div>
-            <div class="gf-form" ng-if="ctrl.target.aggregation.type">
+            <div class="gf-form" ng-if="ctrl.model.aggregation.type">
                 <label class="gf-form-label query-keyword width-10">PERIOD</label>
                 <input class="gf-form-input gf-size-auto"
                        type="number"
                        name="count"
                        min="1"
                        max="9999"
-                       ng-model="ctrl.target.aggregation.period.count"
+                       ng-model="ctrl.model.aggregation.period.count"
                        ng-change="ctrl.refresh()"
                 >
                 <div class="gf-form-select-wrapper query">
                     <select class="gf-form-input gf-size-auto"
-                            ng-model="ctrl.target.aggregation.period.unit"
+                            ng-model="ctrl.model.aggregation.period.unit"
                             ng-options="item.value as item.label for item in ctrl.suggest.aggregation.period.units"
                             ng-change="ctrl.refresh()"
                     >
@@ -70,7 +80,7 @@
         <div class="gf-form">
             <label class="gf-form-label query-keyword width-10">TAGS SELECTOR</label>
             <div class="gf-form-inline">
-                <div class="gf-form" ng-repeat="tag in ctrl.target.tags">
+                <div class="gf-form" ng-repeat="tag in ctrl.model.tags">
                     <div class="gf-form-label  query-segment-value"
                          ng-class="{'query-segment-operator': ctrl.state.tagRow.tags[$index].selected}"
                          ng-mouseenter="ctrl.tagMouseover($index)"
@@ -128,8 +138,7 @@
                    spellcheck='false'
                    placeholder="value"
                    ng-model="ctrl.segments.tagEditor.value"
-                   bs-typeahead="ctrl.suggest.tags.values"
-            >
+                   bs-typeahead="ctrl.suggest.tags.values">
             <a class="gf-form-label pointer"
                ng-click="ctrl.saveTag()">
                 <i class="fa fa-check"/>

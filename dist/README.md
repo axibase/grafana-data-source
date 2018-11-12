@@ -1,6 +1,6 @@
 # ATSD Grafana Plugin
 
-![](src/img/axibase-and-grafana.png)
+![](/public/plugins/axibase-datasource/img/axibase-and-grafana.png)
 
 ## Table of Contents
 
@@ -36,35 +36,35 @@ sudo service grafana-server restart
 
 After restarting Grafana, access the user interface at `http://localhost:3000/`. From the left menu, select **Configuration > Plugins**.
 
-![](src/img/grafana-9.png)
+![](/public/plugins/axibase-datasource/img/grafana-9.png)
 
 Axibase Time Series Database is visible in the plugin library.
 
-![](src/img/grafana-7.png)
+![](/public/plugins/axibase-datasource/img/grafana-7.png)
 
 From the **Data Sources** tab, click **Add data source**
 
-![](src/img/grafana-6.png)
+![](/public/plugins/axibase-datasource/img/grafana-6.png)
 
 Select **Axibase Time Series Database** from the **Type** drop-down list, and enter your ATSD instance hostname.
 
-![](src/img/grafana-10.png)
+![](/public/plugins/axibase-datasource/img/grafana-10.png)
 
 Select **Basic Auth** under the **Auth** header and enter valid login credentials to your ATSD instance.
 
-![](src/img/grafana-11.png)
+![](/public/plugins/axibase-datasource/img/grafana-11.png)
 
 Click **Save & Test**. Grafana notifies that the connection succeeded.
 
-![](src/img/grafana-12.png)
+![](/public/plugins/axibase-datasource/img/grafana-12.png)
 
 In the event of server connection error, Grafana shows an alert. Confirm login credentials and configuration. Refer to [Grafana Troubleshooting](http://docs.grafana.org/installation/troubleshooting/) documentation for more information.
 
-![](src/img/grafana-14.png)
+![](/public/plugins/axibase-datasource/img/grafana-14.png)
 
 On the **Home Dashboard** page, ATSD is visible under the **Installed Datasources** header.
 
-![](src/img/grafana-15.png)
+![](/public/plugins/axibase-datasource/img/grafana-15.png)
 
 ## Examples
 
@@ -74,15 +74,15 @@ To create dashboards, complete datasource [installation and configuration](#inst
 
 From the **Home Dashboard**, click **New Dashboard**.
 
-![](src/img/grafana-16.png)
+![](/public/plugins/axibase-datasource/img/grafana-16.png)
 
 Select a dashboard component (these examples use the **Graph** option). Expand the **Panel Title** drop-down list and click **Edit**.
 
-![](src/img/grafana-17.png)
+![](/public/plugins/axibase-datasource/img/grafana-17.png)
 
 Set **Data Source** to ATSD if you have used a different database as the default location.
 
-![](src/img/grafana-18.png)
+![](/public/plugins/axibase-datasource/img/grafana-18.png)
 
 The following configurations demonstrate example Grafana visualization:
 
@@ -92,18 +92,18 @@ The following configurations demonstrate example Grafana visualization:
 * Tag selection
 * Aggregation
 
-![](src/img/grafana-19.png)
+![](/public/plugins/axibase-datasource/img/grafana-19.png)
 
 ### Example Two
 
 * Entity [wildcard](https://axibase.com/docs/atsd/search/entity-search.html#wildcards) (`*`)
 * Include all tags
 
-![](src/img/grafana-20.png)
+![](/public/plugins/axibase-datasource/img/grafana-20.png)
 
 ### Example Three
 
 * Multiple tags
 * Tag auto-complete feature
 
-![](src/img/grafana-21.png)
+![](/public/plugins/axibase-datasource/img/grafana-21.png)
