@@ -55,7 +55,7 @@ module.exports = {
     }]),
     new ReplaceInFileWebpackPlugin([{
       dir: path.join(__dirname, 'dist'),
-      files: ['README.MD'],
+      files: ['README.md'],
       rules: [{
         search: /\(src\/img/g,
         replace: '(/public/plugins/' + pluginJson.id + '/img',
