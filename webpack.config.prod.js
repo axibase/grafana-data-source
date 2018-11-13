@@ -6,10 +6,13 @@ var conf = baseWebpackConfig;
 conf.mode = 'production';
 
 conf.plugins.push(new ngAnnotatePlugin());
-conf.plugins.push(
-  new UglifyJSPlugin({
-  sourceMap: true,
-  })
-);
+conf.optimization = {
+  minimizer: [new UglifyJSPlugin({
+    sourceMap: false,
+    uglifyOptions: {
+      mangle: false,
+    },
+  })],
+};
 
 module.exports = conf;
