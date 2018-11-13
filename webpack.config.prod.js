@@ -8,7 +8,7 @@ conf.mode = 'production';
 conf.plugins.push(new ngAnnotatePlugin());
 conf.optimization = {
   minimizer: [new UglifyJSPlugin({
-    sourceMap: true,
+    sourceMap: false,
     uglifyOptions: {
       mangle: false,
     },
