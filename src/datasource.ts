@@ -1,11 +1,5 @@
 import _ from 'lodash';
-import {
-  _convertToAtsdTime,
-  _convertToSeconds,
-  _parsePeriod,
-  _transformMetricData,
-  convertTags,
-} from './convertutils';
+import {_convertToAtsdTime, _convertToSeconds, _parsePeriod, _transformMetricData, convertTags} from './convertutils';
 import {BackendSrv} from 'grafana/app/core/services/backend_srv';
 import {AtsdClient, AtsdVersion, Entity, Table} from './atsd_client';
 
@@ -33,7 +27,7 @@ export default class AtsdDatasource {
     instanceSettings,
     private backendSrv: BackendSrv,
     private templateSrv,
-    private $q
+    private $q,
   ) {
     this.client = new AtsdClient(this.backendSrv, {
       proxyUrl: instanceSettings.url,
@@ -71,16 +65,19 @@ export default class AtsdDatasource {
       if (response.data === undefined) {
         return {data: []};
       }
+      console.log(response.data);
       const result = response.data
-        .filter(
-          s =>
-            s &&
-            s.tags &&
-            !Object.keys(s.tags)
-              .map(k => s.tags[k])
-              .every(v => v === '*')
-        )
-        .map(_transformMetricData);
+        .filter(s => {
+          if (s) {
+            if (s.tags) {
+              const keys = Object.keys(s.tags);
+              return keys.length === 0 || !keys.map(k => s.tags[k]).every(v => v === '*');
+            } else {
+              return true;
+            }
+          }
+          return false;
+        }).map(_transformMetricData);
       result.sort((a, b) => {
         const nameA = a.target.toLowerCase();
         const nameB = b.target.toLowerCase();
