@@ -111,7 +111,7 @@ export default class AtsdDatasource {
                 tsQueries.push({
                   startDate: start,
                   endDate: end,
-                  limit: 10000,
+                  limit: 100000,
                   entity: query.entity,
                   metric: query.table ? `${query.table},${query.metric}` : query.metric,
                   tags: tags,
@@ -131,7 +131,7 @@ export default class AtsdDatasource {
           tsQueries.push({
             startDate: start,
             endDate: end,
-            limit: 10000,
+            limit: 100000,
             entity: query.entity,
             metric: query.table ? `${query.table},${query.metric}` : query.metric,
             tags: tags,
